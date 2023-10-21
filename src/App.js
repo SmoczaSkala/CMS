@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "./views/home/home";
+import Admin from "./views/admin/admin";
+import { AppContextProvider } from "./components/context/app.context";
+import LoginForm from "./components/loginForm/loginForm";
+import { SessionProvider } from "./SessionProvider";
 
-function App() {
+const App = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <AppContextProvider>
+        <SessionProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="Login" element={<LoginForm />} />
+              <Route path="admin" element={<Admin />} />
+            </Routes>
+          </BrowserRouter>
+        </SessionProvider>
+      </AppContextProvider>
     </div>
   );
-}
+};
 
 export default App;
