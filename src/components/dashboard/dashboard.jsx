@@ -1,14 +1,12 @@
-import "./dashboard.scss";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "./../context/app.context";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import Footer from "../footer/footer";
 import Slider from "../slider/slider";
+import "./dashboard.scss";
 
 const Dashboard = () => {
   const { setSlider, setLogged } = useContext(AppContext);
-  const navigate = useNavigate();
 
   const [footerText, setFooterText] = useState(
     sessionStorage.getItem("footerText") || "Edytuj stopkę"
@@ -27,10 +25,13 @@ const Dashboard = () => {
     sessionStorage.getItem("image3Link") || ""
   );
 
+  const [headerOrderText, setHeaderOrderText] = useState(
+    sessionStorage.getItem("headerOrderText") || "1, 2, 3"
+  );
+
   const handleLogout = () => {
     setLogged(false);
     sessionStorage.removeItem("isLogged");
-    navigate("/");
   };
 
   useEffect(() => {
@@ -43,6 +44,7 @@ const Dashboard = () => {
   const handleFooterTextChange = (e) => {
     const newText = e.target.value;
     setFooterText(newText);
+    sessionStorage.setItem("footerText", newText);
   };
 
   const handleSliderToggle = () => {
@@ -57,6 +59,18 @@ const Dashboard = () => {
     sessionStorage.setItem("image1Link", image1Link);
     sessionStorage.setItem("image2Link", image2Link);
     sessionStorage.setItem("image3Link", image3Link);
+  };
+
+  const handleHeaderOrderTextChange = (e) => {
+    const text = e.target.value;
+    setHeaderOrderText(text);
+  };
+
+  const handleSaveHeaderOrder = () => {
+    const orderArray = headerOrderText
+      .split(",")
+      .map((item) => parseInt(item.trim(), 10));
+    sessionStorage.setItem("headerOrderText", headerOrderText);
   };
 
   return (
@@ -99,6 +113,16 @@ const Dashboard = () => {
           <textarea value={footerText} onChange={handleFooterTextChange} />
           <button onClick={handleSaveImages}>Zapisz w Stopce</button>
           <Footer updatedText={footerText} />
+        </div>
+        <div className="Sett">
+          <h2>Zmień kolejność nagłówków</h2>
+          <input
+            type="text"
+            placeholder="Nowa kolejność nagłówków"
+            value={headerOrderText}
+            onChange={handleHeaderOrderTextChange}
+          />
+          <button onClick={handleSaveHeaderOrder}>Zapisz kolejność</button>
         </div>
         <div className="Sett">
           <h2>add product</h2>
