@@ -3,7 +3,6 @@ import { AppContext } from "./../context/app.context";
 import { Link } from "react-router-dom";
 import "./dashboard.scss";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import Slider from "../slider/slider";
 
 const Dashboard = () => {
   const { slider, setSlider, setLogged } = useContext(AppContext);
@@ -97,7 +96,6 @@ const Dashboard = () => {
       <div className="Sett">
         <button onClick={handleLogout}>Logout</button>
       </div>
-      <Slider />
     </div>
   );
 };

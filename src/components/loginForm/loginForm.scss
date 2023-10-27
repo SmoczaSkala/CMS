@@ -71,3 +71,36 @@
     color: #007bff;
   }
 }
+
+@media (max-width: 768px) {
+  .login-form {
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  label {
+    font-size: 14px;
+  }
+
+  .form-control {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .error-message {
+    font-size: 12px;
+    margin-top: 5px;
+  }
+
+  button {
+    padding: 8px;
+  }
+
+  a {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+}

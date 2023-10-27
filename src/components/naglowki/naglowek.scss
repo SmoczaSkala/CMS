@@ -38,3 +38,16 @@
   background-color: #e74c3c;
   color: #fff;
 }
+
+@media (max-width: 768px) {
+  .naglowek1,
+  .naglowek2,
+  .naglowek3 {
+    padding: 10px;
+    margin: 5px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+}
