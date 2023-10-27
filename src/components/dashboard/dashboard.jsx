@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "./../context/app.context";
 import { Link } from "react-router-dom";
 import "./dashboard.scss";
@@ -15,6 +15,10 @@ const Dashboard = () => {
     image2Link: sessionStorage.getItem("image2Link") || "",
     image3Link: sessionStorage.getItem("image3Link") || "",
   });
+
+  const [headerOrderText, setHeaderOrderText] = useState(
+    sessionStorage.getItem("headerOrderText") || ""
+  );
 
   const handleLogout = () => {
     setLogged(false);
@@ -38,6 +42,10 @@ const Dashboard = () => {
       const link = imageLinks[`image${num}Link`] || "";
       handleSaveData(`image${num}Link`, link);
     }
+  };
+
+  const handleSaveHeaderOrder = () => {
+    handleSaveData("headerOrderText", headerOrderText);
   };
 
   return (
@@ -90,6 +98,18 @@ const Dashboard = () => {
           />
           <button onClick={handleSaveData.bind(null, "footerText", footerText)}>
             Zapisz w Stopce
+          </button>
+        </div>
+        <div className="Sett">
+          <h2>Zarządzaj kolejnością nagłówków</h2>
+          <input
+            type="text"
+            placeholder="Kolejność (np. 1, 2, 3)"
+            value={headerOrderText}
+            onChange={(e) => setHeaderOrderText(e.target.value)}
+          />
+          <button onClick={handleSaveHeaderOrder}>
+            Zapisz kolejność nagłówków
           </button>
         </div>
       </div>
