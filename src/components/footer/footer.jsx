@@ -5,7 +5,7 @@ const Footer = () => {
   const [footerText, setFooterText] = useState("");
 
   useEffect(() => {
-    const savedFooterText = localStorage.getItem("footerText");
+    const savedFooterText = sessionStorage.getItem("footerText");
     if (savedFooterText) {
       setFooterText(savedFooterText);
     }

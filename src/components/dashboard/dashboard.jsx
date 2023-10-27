@@ -1,8 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "./../context/app.context";
 import { Link } from "react-router-dom";
-import Footer from "../footer/footer";
-import Slider from "../slider/slider";
 import "./dashboard.scss";
 
 const Dashboard = () => {
@@ -32,6 +30,7 @@ const Dashboard = () => {
   const handleLogout = () => {
     setLogged(false);
     sessionStorage.removeItem("isLogged");
+    window.location.href = "/login";
   };
 
   useEffect(() => {
@@ -85,7 +84,6 @@ const Dashboard = () => {
             {sliderState ? "OFF" : "ON"}
           </button>
         </div>
-        <Slider />
         <div className="Sett">
           <h2>Zmień linki obrazków w sliderze</h2>
           <input
@@ -112,7 +110,6 @@ const Dashboard = () => {
           <h2>Edytuj stopkę</h2>
           <textarea value={footerText} onChange={handleFooterTextChange} />
           <button onClick={handleSaveImages}>Zapisz w Stopce</button>
-          <Footer updatedText={footerText} />
         </div>
         <div className="Sett">
           <h2>Zmień kolejność nagłówków</h2>
