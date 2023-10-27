@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "./../context/app.context";
 import { Link } from "react-router-dom";
 import "./dashboard.scss";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const Dashboard = () => {
   const { setSlider, setLogged } = useContext(AppContext);
@@ -30,7 +32,7 @@ const Dashboard = () => {
   const handleLogout = () => {
     setLogged(false);
     sessionStorage.removeItem("isLogged");
-    window.location.href = "/login";
+    window.location.href = "/";
   };
 
   useEffect(() => {
@@ -120,12 +122,6 @@ const Dashboard = () => {
             onChange={handleHeaderOrderTextChange}
           />
           <button onClick={handleSaveHeaderOrder}>Zapisz kolejność</button>
-        </div>
-        <div className="Sett">
-          <h2>add product</h2>
-        </div>
-        <div className="Sett">
-          <h2>delete product</h2>
         </div>
       </div>
       <div className="Sett">
