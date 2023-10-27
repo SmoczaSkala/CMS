@@ -3,30 +3,19 @@ import { AppContext } from "./../context/app.context";
 import { Link } from "react-router-dom";
 import "./dashboard.scss";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import Slider from "../slider/slider";
 
 const Dashboard = () => {
-  const { setSlider, setLogged } = useContext(AppContext);
+  const { slider, setSlider, setLogged } = useContext(AppContext);
 
   const [footerText, setFooterText] = useState(
     sessionStorage.getItem("footerText") || "Edytuj stopkę"
   );
-  const [sliderState, setSliderState] = useState(
-    sessionStorage.getItem("sliderState") === "true"
-  );
-
-  const [image1Link, setImage1Link] = useState(
-    sessionStorage.getItem("image1Link") || ""
-  );
-  const [image2Link, setImage2Link] = useState(
-    sessionStorage.getItem("image2Link") || ""
-  );
-  const [image3Link, setImage3Link] = useState(
-    sessionStorage.getItem("image3Link") || ""
-  );
-
-  const [headerOrderText, setHeaderOrderText] = useState(
-    sessionStorage.getItem("headerOrderText") || "1, 2, 3"
-  );
+  const [imageLinks, setImageLinks] = useState({
+    image1Link: sessionStorage.getItem("image1Link") || "",
+    image2Link: sessionStorage.getItem("image2Link") || "",
+    image3Link: sessionStorage.getItem("image3Link") || "",
+  });
 
   const handleLogout = () => {
     setLogged(false);
@@ -41,36 +30,15 @@ const Dashboard = () => {
     }
   }, [setLogged]);
 
-  const handleFooterTextChange = (e) => {
-    const newText = e.target.value;
-    setFooterText(newText);
-    sessionStorage.setItem("footerText", newText);
+  const handleSaveData = (key, value) => {
+    sessionStorage.setItem(key, value);
   };
 
-  const handleSliderToggle = () => {
-    const newSliderState = !sliderState;
-    setSliderState(newSliderState);
-
-    sessionStorage.setItem("sliderState", newSliderState ? "true" : "false");
-    setSlider(newSliderState);
-  };
-
-  const handleSaveImages = () => {
-    sessionStorage.setItem("image1Link", image1Link);
-    sessionStorage.setItem("image2Link", image2Link);
-    sessionStorage.setItem("image3Link", image3Link);
-  };
-
-  const handleHeaderOrderTextChange = (e) => {
-    const text = e.target.value;
-    setHeaderOrderText(text);
-  };
-
-  const handleSaveHeaderOrder = () => {
-    const orderArray = headerOrderText
-      .split(",")
-      .map((item) => parseInt(item.trim(), 10));
-    sessionStorage.setItem("headerOrderText", headerOrderText);
+  const handleSaveImageLinks = () => {
+    for (let num = 1; num <= 3; num++) {
+      const link = imageLinks[`image${num}Link`] || "";
+      handleSaveData(`image${num}Link`, link);
+    }
   };
 
   return (
@@ -81,51 +49,55 @@ const Dashboard = () => {
       <div className="section-settings">
         <div className="Sett">
           <h2>Slider</h2>
-          <button onClick={handleSliderToggle}>
-            {sliderState ? "OFF" : "ON"}
+          <button
+            onClick={() => {
+              const newSliderState = !slider;
+              setSlider(newSliderState);
+              handleSaveData("sliderState", newSliderState ? "true" : "false");
+            }}
+          >
+            {slider ? "ON" : "OFF"}
           </button>
         </div>
         <div className="Sett">
           <h2>Zmień linki obrazków w sliderze</h2>
-          <input
-            type="text"
-            placeholder="Link do obrazka 1"
-            value={image1Link}
-            onChange={(e) => setImage1Link(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Link do obrazka 2"
-            value={image2Link}
-            onChange={(e) => setImage2Link(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Link do obrazka 3"
-            value={image3Link}
-            onChange={(e) => setImage3Link(e.target.value)}
-          />
+          {[1, 2, 3].map((num) => (
+            <input
+              key={num}
+              type="text"
+              placeholder={`Link do obrazka ${num}`}
+              value={imageLinks[`image${num}Link`]}
+              onChange={(e) => {
+                const newLinks = {
+                  ...imageLinks,
+                  [`image${num}Link`]: e.target.value,
+                };
+                setImageLinks(newLinks);
+              }}
+            />
+          ))}
         </div>
-        <button onClick={handleSaveImages}>Zapisz obrazki</button>
+        <button onClick={handleSaveImageLinks}>
+          Zapisz obrazki w sliderze
+        </button>
         <div className="Sett">
           <h2>Edytuj stopkę</h2>
-          <textarea value={footerText} onChange={handleFooterTextChange} />
-          <button onClick={handleSaveImages}>Zapisz w Stopce</button>
-        </div>
-        <div className="Sett">
-          <h2>Zmień kolejność nagłówków</h2>
-          <input
-            type="text"
-            placeholder="Nowa kolejność nagłówków"
-            value={headerOrderText}
-            onChange={handleHeaderOrderTextChange}
+          <textarea
+            value={footerText}
+            onChange={(e) => {
+              setFooterText(e.target.value);
+              handleSaveData("footerText", e.target.value);
+            }}
           />
-          <button onClick={handleSaveHeaderOrder}>Zapisz kolejność</button>
+          <button onClick={handleSaveData.bind(null, "footerText", footerText)}>
+            Zapisz w Stopce
+          </button>
         </div>
       </div>
       <div className="Sett">
         <button onClick={handleLogout}>Logout</button>
       </div>
+      <Slider />
     </div>
   );
 };

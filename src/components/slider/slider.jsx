@@ -1,13 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./slider.scss";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { AppContext } from "./../context/app.context";
 
 const Slider = () => {
-  const [sliderVisible, setSliderVisible] = useState(true);
-  const [image1, setImage1] = useState("images/slide1.jpg");
-  const [image2, setImage2] = useState("images/slide2.jpg");
-  const [image3, setImage3] = useState("images/slide3.jpg");
+  const { slider } = useContext(AppContext);
+
+  const [sliderVisible, setSliderVisible] = useState(slider);
+  const [image1, setImage1] = useState(
+    sessionStorage.getItem("image1Link") || "images/slide1.jpg"
+  );
+  const [image2, setImage2] = useState(
+    sessionStorage.getItem("image2Link") || "images/slide2.jpg"
+  );
+  const [image3, setImage3] = useState(
+    sessionStorage.getItem("image3Link") || "images/slide3.jpg"
+  );
+
   useEffect(() => {
     const isSliderVisible = sessionStorage.getItem("sliderState");
     if (isSliderVisible !== null) {
