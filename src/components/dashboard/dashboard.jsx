@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "./../context/app.context";
 import { Link } from "react-router-dom";
 import "./dashboard.scss";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const Dashboard = () => {
   const { slider, setSlider, setLogged } = useContext(AppContext);
@@ -37,6 +36,11 @@ const Dashboard = () => {
     sessionStorage.setItem(key, value);
   };
 
+  const handleClick = () => {
+    const newSliderState = !slider;
+    setSlider(newSliderState);
+    handleSaveData("sliderState", newSliderState ? "true" : "false");
+  };
   const handleSaveImageLinks = () => {
     for (let num = 1; num <= 3; num++) {
       const link = imageLinks[`image${num}Link`] || "";
@@ -56,15 +60,7 @@ const Dashboard = () => {
       <div className="section-settings">
         <div className="Sett">
           <h2>Slider</h2>
-          <button
-            onClick={() => {
-              const newSliderState = !slider;
-              setSlider(newSliderState);
-              handleSaveData("sliderState", newSliderState ? "true" : "false");
-            }}
-          >
-            {slider ? "ON" : "OFF"}
-          </button>
+          <button onClick={handleClick}>{slider ? "ON" : "OFF"}</button>
         </div>
         <div className="Sett">
           <h2>Zmień linki obrazków w sliderze</h2>
